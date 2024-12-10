@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <div id="error">
+
+    </div>
+
+    <script>
+        axios.get('https://localhost:7282/api/Products/productlist-byCategoryName/1')
+            .then(function (response) {
+                if (response.data.statusCode != 200) {
+                    if (response.data.isShow == false) {
+                        axios.get(`https://localhost:7282/api/log/write-log?log=${response.data.message}`)
+                        .then(function(response){
+                            console.log("Log kayıdı alındı.")
+                        })
+                    }
+                    else{
+                        var divim = document.getElementById("error");
+                        divim.innerHTML = response.data.message;
+                    }
+                }
+                console.log(response);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+    </script>
+</body>
+
+</html>
